@@ -31,7 +31,7 @@ import CourseProgressReport from "./dashboard/student/CourseProgressReport";
 import ForumPage from "./components/ForumPage";
 import { GetAllCourses, GetAllUsers } from "./service/api";
 import Profile from "./dashboard/student/Profile";
-import Test from "./dashboard/student/Test";
+import Query from "./dashboard/student/Query";
 import { Suspense } from "react";
 
 export const Router = createBrowserRouter([
@@ -171,8 +171,8 @@ export const Router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "test",
-        element: <Test />,
+        path: "Query",
+        element: <Query />,
       },
     ],
   },

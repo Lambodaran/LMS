@@ -400,3 +400,28 @@ export const DeleteCalendarEventById = async (id) => {
 };
 
 // ================================= Calendar section ========================
+
+
+// ================================= Query Section ========================
+
+// Get all queries
+export const GetAllQueries = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/api/queries`);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || "Failed to fetch queries";
+  }
+};
+
+// Create a new query/ticket
+export const CreateQuery = async (queryData) => {
+  try {
+    const res = await axios.post(`${baseUrl}/api/queries`, queryData);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || "Failed to create query";
+  }
+};
+
+// ================================= Query Section ========================
