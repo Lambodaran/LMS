@@ -43,11 +43,7 @@ function StudentLayout() {
       label: "Course Progress Report",
       icon: <ClipboardCheck className="h-5" />,
     },
-    {
-      path: "/student/Profile",
-      label: "Profile",
-      icon: <User className="h-5" />,
-    },
+    
     {
       path: "/student/achievements",
       label: "Achievements",
@@ -65,7 +61,7 @@ function StudentLayout() {
     },
 
     {
-      path: "#",
+      path: "/student/query",
       label: "Query",
       icon: <MessageCircleQuestion className="h-5" />,
     },

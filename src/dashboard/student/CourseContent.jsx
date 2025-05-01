@@ -133,8 +133,8 @@ function CourseContent() {
 
     if (currentContent.type === "test") {
       return (
-        <div className="p-6">
-          <h2 className="text-xl font-bold mb-6">{currentContent.title}</h2>
+        <div className="p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-bold mb-6">{currentContent.title}</h2>
           <div className="space-y-4">
             {currentContent.test?.questions?.map((q, i) => (
               <div key={i} className="p-4 border rounded-lg">
@@ -155,7 +155,7 @@ function CourseContent() {
                         htmlFor={`q${i}-opt${j}`}
                         className={`flex-1 ${
                           submitted
-                            ? opt === q.answer
+                            ? opt === answers[i] && answers[i] === q.answer
                               ? "text-green-600 font-semibold"
                               : answers[i] === opt
                               ? "text-red-600"
@@ -165,7 +165,7 @@ function CourseContent() {
                       >
                         {opt}
                       </label>
-                      {submitted && opt === q.answer && (
+                      {submitted && opt === answers[i] && answers[i] === q.answer && (
                         <span className="ml-2 text-green-600">✓ Correct</span>
                       )}
                       {submitted && answers[i] === opt && answers[i] !== q.answer && (
@@ -174,11 +174,6 @@ function CourseContent() {
                     </li>
                   ))}
                 </ul>
-                {submitted && (
-                  <p className="mt-2 text-sm">
-                    Correct Answer: <span className="font-semibold">{q.answer}</span>
-                  </p>
-                )}
               </div>
             ))}
           </div>
@@ -211,14 +206,6 @@ function CourseContent() {
       }
       return (
         <div className="w-full h-full relative flex flex-col">
-          <div className="flex justify-start items-center p-2">
-            <button
-              onClick={() => markAsCompleted()}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            >
-              Mark as Complete
-            </button>
-          </div>
           <video
             ref={videoRef}
             controls
@@ -248,14 +235,6 @@ function CourseContent() {
       }
       return (
         <div className="flex flex-col items-center justify-center h-full relative">
-          <div className="flex justify-start items-center p-2 w-full">
-            <button
-              onClick={() => markAsCompleted()}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            >
-              Mark as Complete
-            </button>
-          </div>
           <img
             src={course.thumbnail}
             alt={course.title}
@@ -376,87 +355,90 @@ function CourseContent() {
   const progress = calculateProgress();
 
   return (
-    <div className="grid lg:grid-cols-4 auto-rows-1fr bg-gray-200 min-h-[calc(100vh-3.5rem)] relative gap-4 p-2 lg:p-4">
-      <div className="col-span-1 row-span-1 p-4 bg-white w-full shadow-sm rounded-lg flex flex-col gap-2">
+    <div className="flex flex-col min-h-[calc(100vh-3.5rem)] bg-gray-200 gap-4 p-2 sm:p-4">
+      {/* Course Info Section */}
+      <div className="p-4 bg-white shadow-sm rounded-lg flex flex-col gap-2">
         <button
-          className="flex items-center gap-2 text-green-800 font-semibold text-sm"
+          className="flex items-center gap-2 text-green-800 font-semibold text-sm mb-2"
           onClick={() => (window.location.href = "/student/course")}
         >
           <ArrowLeft className="h-4 w-4" />
           Courses
         </button>
-        <div className="h-30">
+        <div className="h-40 sm:h-30">
           <img
             src={course.thumbnail}
             alt={course.title}
             className="bg-green-50 object-cover object-center w-full h-full rounded-md shadow-sm"
           />
         </div>
-        <h2 className="text-sm lg:text-base font-semibold">{course.title}</h2>
+        <h2 className="text-sm sm:text-base font-semibold">{course.title}</h2>
         <div className="flex flex-col gap-2 items-end w-full">
           <p className="text-xs">{progress}% Completed</p>
           <div className="h-3 bg-green-300 relative w-full rounded-full overflow-hidden">
             <div
-              className={`absolute bg-green-700 left-0 h-full transition-transform duration-300 ease-in-out`}
+              className="absolute bg-green-700 left-0 h-full transition-transform duration-300 ease-in-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
         </div>
       </div>
-      <div className="col-span-1 lg:col-span-3 row-span-3">
-        <div className="p-2 lg:p-4 bg-white shadow-sm rounded-lg flex flex-col gap-4 h-full">
-          <div className="flex justify-between items-center">
-            <h2 className="text-sm md:text-base lg:text-lg font-semibold">
-              {currentContent?.title || course.title || "Course"}
-              {currentContent && (
-                <span className="text-gray-500 ml-2">
-                  {currentContent.lessonNo}.{currentContent.exerciseNo}
-                </span>
-              )}
-            </h2>
-            <div className="flex items-center gap-2">
-              <button
-                className="px-2 py-1 hover:bg-green-500 hover:text-white rounded-full"
-                onClick={handlePrevious}
-                disabled={currentLessonIndex === 0 && currentSubLessonIndex === 0}
-              >
-                <ChevronLeft />
-              </button>
-              <button
-                className="px-2 py-1 hover:bg-green-500 hover:text-white rounded-full"
-                onClick={handleNext}
-                disabled={isLastContent()}
-              >
-                <ChevronRight />
-              </button>
-            </div>
-          </div>
-          <div className="w-full aspect-video rounded-md overflow-hidden bg-gray-100 relative">
-            {renderContent()}
+
+      {/* Content Section */}
+      <div className="bg-white shadow-sm rounded-lg flex flex-col gap-4 h-auto">
+        <div className="flex justify-between items-center p-2 sm:p-4">
+          <h2 className="text-sm sm:text-base md:text-lg font-semibold">
+            {currentContent?.title || course.title || "Course"}
+            {currentContent && (
+              <span className="text-gray-500 ml-2">
+                {currentContent.lessonNo}.{currentContent.exerciseNo}
+              </span>
+            )}
+          </h2>
+          <div className="flex items-center gap-2">
+            <button
+              className="p-2 hover:bg-green-500 hover:text-white rounded-full"
+              onClick={handlePrevious}
+              disabled={currentLessonIndex === 0 && currentSubLessonIndex === 0}
+            >
+              <ChevronLeft />
+            </button>
+            <button
+              className="p-2 hover:bg-green-500 hover:text-white rounded-full"
+              onClick={handleNext}
+              disabled={isLastContent()}
+            >
+              <ChevronRight />
+            </button>
           </div>
         </div>
+        <div className="w-full aspect-video rounded-md overflow-hidden bg-gray-100 relative">
+          {renderContent()}
+        </div>
       </div>
-      <div className="col-span-1 row-span-2 w-full bg-white flex-1 shadow-sm rounded-lg flex flex-col h-full">
-        <h3 className="text-sm lg:text-base uppercase font-semibold p-4">
+
+      {/* Lessons Accordion Section */}
+      <div className="bg-white shadow-sm rounded-lg flex flex-col">
+        <h3 className="text-sm sm:text-base uppercase font-semibold p-4">
           Contents
         </h3>
-        <div className="overflow-auto flex-1 max-h-[300px]">
+        <div className="overflow-y-auto max-h-[50vh] sm:max-h-[60vh] flex-1">
           {course.lessons?.map((lesson, lessonIndex) => {
             const isLessonCompleted = lesson.sublessons?.every(
               (_, subLessonIndex) =>
                 completedExercises.has(`${lessonIndex}-${subLessonIndex}`)
             );
             return (
-              <div key={lessonIndex} className="shadow-lg rounded mb-2 bg-white">
+              <div key={lessonIndex} className="shadow-sm rounded mb-2 bg-white mx-2">
                 <button
                   onClick={() =>
                     setActiveAccordion(
                       activeAccordion === lessonIndex ? null : lessonIndex
                     )
                   }
-                  className={`w-full flex justify-between items-center p-3 px-4 gap-2 text-left text-lg font-medium hover:bg-green-100 focus:outline-none ${
+                  className={`w-full flex justify-between items-center p-3 px-4 gap-2 text-left text-sm font-medium hover:bg-green-100 focus:outline-none ${
                     isLessonCompleted
-                      ? "bg-green-200 text-green- Occupied border border-green-300"
+                      ? "bg-green-200 text-green-800 border border-green-300"
                       : "bg-white text-black"
                   }`}
                 >
@@ -474,7 +456,7 @@ function CourseContent() {
                     }`}
                     fill="none"
                     stroke="currentColor"
-                    viewBox="0 24"
+                    viewBox="0 0 24 24"
                   >
                     <path
                       strokeLinecap="round"
@@ -503,7 +485,7 @@ function CourseContent() {
                             subLessonIndex
                           )
                         }
-                        className={`p-3 px-4 flex w-full text-xs font-semibold items-center gap-2 hover:bg-green-200 ${
+                        className={`p-3 px-4 flex w-full text-xs sm:text-sm font-semibold items-center gap-2 hover:bg-green-200 ${
                           isCompleted ? "bg-green-100 text-green-800" : ""
                         } ${
                           currentLessonIndex === lessonIndex &&
