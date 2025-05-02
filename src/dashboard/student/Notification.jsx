@@ -41,7 +41,7 @@ function Notification({ onClose }) {
           <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center mr-2">
             <User className="w-5 h-5 text-gray-600" />
           </div>
-          <h2 className="text-sm font-semibold text-gray-800">Welcome back Lengend Lightning</h2>
+          <h2 className="text-sm font-semibold text-gray-800">Welcome back </h2>
         </div>
         {/* Removed unread count badge from notification page */}
       </div>
