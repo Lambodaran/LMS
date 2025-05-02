@@ -32,6 +32,7 @@ import ForumPage from "./components/ForumPage";
 import { GetAllCourses, GetAllUsers } from "./service/api";
 import Profile from "./dashboard/student/Profile";
 import Query from "./dashboard/student/Query";
+import Notification from "./dashboard/student/Notification";
 import { Suspense } from "react";
 
 export const Router = createBrowserRouter([
