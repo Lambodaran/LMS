@@ -12,6 +12,7 @@ import {
   Megaphone,
   MessageCircleQuestion,
   MessagesSquare,
+  Bell,
 } from "lucide-react";
 import { Suspense } from "react";
 
