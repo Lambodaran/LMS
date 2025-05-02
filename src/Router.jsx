@@ -174,6 +174,10 @@ export const Router = createBrowserRouter([
         path: "Query",
         element: <Query />,
       },
+      {
+        path: "notification",
+        element: <Notification />,
+      },
     ],
   },
 ]);

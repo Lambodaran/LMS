@@ -65,6 +65,11 @@ function StudentLayout() {
       label: "Query",
       icon: <MessageCircleQuestion className="h-5" />,
     },
+    {
+      path: "/student/notification",
+      label: "Query",
+      icon: <Bell className="h-5" />,
+    },
   ];
   return (
     <>
