@@ -68,7 +68,7 @@ function StudentLayout() {
     },
     {
       path: "/student/notification",
-      label: "Query",
+      label: "Notification",
       icon: <Bell className="h-5" />,
     },
   ];
