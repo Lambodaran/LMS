@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Bell } from 'lucide-react';
+import { GetAllNotifications } from '../service/api'; // Adjust the import path as needed
 import Notification from '../dashboard/student/Notification';
 
 function DashboardNavbar() {
@@ -11,18 +12,29 @@ function DashboardNavbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Initialize mock data on mount
+  // Fetch notifications from API on mount
   useEffect(() => {
-    setIsLoading(true);
-    const mockNotifications = [
-      { id: '1', text: 'titanic hollywood movie', isRead: false },
-      { id: '2', text: 'haihai new notification', isRead: false },
-      { id: '3', text: 'level up keep up', isRead: false },
-      { id: '4', text: 'memorial remember', isRead: false },
-      { id: '5', text: 'hi ma hello', isRead: false },
-    ];
-    setNotifications(mockNotifications);
-    setIsLoading(false);
+    const fetchNotifications = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await GetAllNotifications();
+        // Transform API response to match component expectations
+        const transformedData = data.map(notification => ({
+          id: notification._id,
+          text: `${notification.title}: ${notification.message}`,
+          isRead: notification.isRead,
+        }));
+        setNotifications(transformedData);
+      } catch (err) {
+        setError(err.message || 'Failed to load notifications');
+        console.error('Error fetching notifications:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchNotifications();
   }, []);
 
   // Calculate number of unread notifications
@@ -69,10 +81,6 @@ function DashboardNavbar() {
           {/* Notification Dropdown */}
           {isDropdownOpen && (
             <Notification
-              notifications={notifications}
-              setNotifications={setNotifications}
-              isLoading={isLoading}
-              error={error}
               onClose={toggleDropdown}
             />
           )}

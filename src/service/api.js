@@ -425,3 +425,27 @@ export const CreateQuery = async (queryData) => {
 };
 
 // ================================= Query Section ========================
+
+// ================================= Notification Section ========================
+
+// Get all notifications
+export const GetAllNotifications = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/api/notifications`);
+    return res.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || "Failed to fetch notifications";
+  }
+};
+
+// Mark notification as read
+export const MarkNotificationAsRead = async (id) => {
+  try {
+    const res = await axios.put(`${baseUrl}/api/notifications/${id}`, { isRead: true });
+    return res.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || "Failed to mark notification as read";
+  }
+};
+
+// ================================= Notification Section ========================
